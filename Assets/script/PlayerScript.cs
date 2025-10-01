@@ -10,9 +10,9 @@ public class Spritemove : MonoBehaviour
     bool isGrounded;
     public Animator anim;
     LayerMask groundLayerMask;
-
+    public int lives;
     private bool facingRight = true;
-    
+    HelperScript helper;
     
     
     
@@ -20,12 +20,15 @@ public class Spritemove : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         groundLayerMask = LayerMask.GetMask("Ground");
+        lives = 3;
+
+        helper = gameObject.AddComponent<HelperScript>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        FlipController();
+        //  FlipController();
 
         float xvel, yvel;
 
@@ -77,12 +80,17 @@ public class Spritemove : MonoBehaviour
             anim.SetBool("isJumping", true);
         }
 
-
+        if(Input.GetKey("space"))
+        {
+            helper.DoFlipObject(true);
+        }
 
 
     }
 
 
+    
+    /*
     private void Flip()
     {
         facingRight = !facingRight; //works as a switcher
@@ -97,7 +105,7 @@ public class Spritemove : MonoBehaviour
             Flip();
     }
 
-   
+   */
 
 
     

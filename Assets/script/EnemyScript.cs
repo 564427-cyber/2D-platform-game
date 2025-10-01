@@ -5,7 +5,7 @@ public class EnemyMove : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
-
+    public Spritemove playerScript;
 
     LayerMask groundLayerMask;
     float xvel;
@@ -23,6 +23,8 @@ public class EnemyMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        print("Enemy says: The player has " + playerScript.lives + " lives ");
 
         
         isGrounded = gc;
@@ -48,8 +50,6 @@ public class EnemyMove : MonoBehaviour
       
 
             rb.linearVelocity = new Vector2(xvel, 0);
-
-
 
     }
 
