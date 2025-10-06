@@ -37,17 +37,17 @@ public class Spritemove : MonoBehaviour
         
         if (Input.GetKey("a"))
         {
-            xvel = -2;
+            xvel = -4;
         }
 
         if (Input.GetKey("d"))
         {
-            xvel = +2;
+            xvel = +4;
         }
 
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded )
         {
-            yvel = +5;
+            yvel = +10;
         }
 
         if (xvel >= 0.1f || xvel <= -0.1f)
@@ -80,7 +80,7 @@ public class Spritemove : MonoBehaviour
             anim.SetBool("isJumping", true);
         }
 
-        if(Input.GetKey("space"))
+        if(Input.GetKey(KeyCode.Space))
         {
             helper.DoFlipObject(true);
         }
