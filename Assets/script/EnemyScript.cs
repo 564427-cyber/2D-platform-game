@@ -9,7 +9,6 @@ public class EnemyMove : MonoBehaviour
 
     LayerMask groundLayerMask;
     float xvel;
-    bool isGrounded;
     Rigidbody2D rb;
     bool gc;
 
@@ -24,12 +23,9 @@ public class EnemyMove : MonoBehaviour
     void Update()
     {
 
-        print("Enemy says: The player has " + playerScript.lives + " lives ");
+       // print("Enemy says: The player has " + playerScript.lives + " lives ");
 
         
-        isGrounded = gc;
-        //if  enemy moving left, check left side of sprite
-
         if (xvel < 0)
         {
             gc = ExtendedRayCollisionCheck(-0.25f, 0);
