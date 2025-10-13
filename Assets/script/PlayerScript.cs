@@ -5,7 +5,6 @@ using UnityEngine;
 public class Spritemove : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-
     Rigidbody2D rb;
     bool isGrounded;
     public Animator anim;
@@ -13,7 +12,7 @@ public class Spritemove : MonoBehaviour
     public int lives;
     private bool facingRight = true;
     HelperScript helper;
-    
+
     
     
     void Start()
@@ -21,6 +20,7 @@ public class Spritemove : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         groundLayerMask = LayerMask.GetMask("Ground");
         lives = 3;
+  
 
         helper = gameObject.AddComponent<HelperScript>();
     }
@@ -28,6 +28,8 @@ public class Spritemove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        
         //  FlipController();
 
         float xvel, yvel;
@@ -93,7 +95,7 @@ public class Spritemove : MonoBehaviour
     }
 
 
-    
+
     /*
     private void Flip()
     {
@@ -112,7 +114,7 @@ public class Spritemove : MonoBehaviour
    */
 
 
-    
+
 
     /*
 
