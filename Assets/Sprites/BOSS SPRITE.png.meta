@@ -129,12 +129,12 @@ TextureImporter:
       name: BOSS SPRITE_0
       rect:
         serializedVersion: 2
-        x: 1581
-        y: 813
-        width: 557
-        height: 615
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 1575
+        y: 811
+        width: 554
+        height: 619
+      alignment: 9
+      pivot: {x: 0.5162313, y: -0.00000009860284}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -151,7 +151,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: c1ba8a31f3b7f8c4ea6c3da82fba4d7b
     internalID: 0
     vertices: []
     indices: 
@@ -159,9 +159,13 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":512.0,"y":512.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.0},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":7,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
       BOSS SPRITE_0: -8601971334365711483
+      BOSS SPRITE_1: 1650988448
+      BOSS SPRITE_2: 154230242
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

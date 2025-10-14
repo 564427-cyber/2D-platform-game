@@ -129,12 +129,12 @@ TextureImporter:
       name: Untitled-1_0
       rect:
         serializedVersion: 2
-        x: 1899
-        y: 797
-        width: 276
-        height: 398
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 1923
+        y: 789
+        width: 250
+        height: 407
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -151,7 +151,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: e2679a97e8482764ba97c71988e0e802
     internalID: 0
     vertices: []
     indices: 
@@ -159,9 +159,14 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":512.0,"y":512.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.0},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":7,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
       Untitled-1_0: 9182157284707403512
+      Untitled-1_1: 617797205
+      Untitled-1_2: -1510301427
+      Untitled-1_3: -365467168
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

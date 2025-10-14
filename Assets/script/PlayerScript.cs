@@ -12,7 +12,7 @@ public class Spritemove : MonoBehaviour
     public int lives;
     private bool facingRight = true;
     HelperScript helper;
-
+    public GameObject weapon;
     
     
     void Start()
@@ -40,11 +40,16 @@ public class Spritemove : MonoBehaviour
         if (Input.GetKey("a"))
         {
             xvel = -4;
+            facingRight = false;
+
         }
+
 
         if (Input.GetKey("d"))
         {
-            xvel = +4;
+            xvel = 4;
+            facingRight = true;
+
         }
 
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded )
@@ -65,6 +70,8 @@ public class Spritemove : MonoBehaviour
 
 
         rb.linearVelocity = new Vector3(xvel, yvel, 0);
+
+        shoot();
 
 
         //do raycasting check
@@ -136,6 +143,30 @@ public class Spritemove : MonoBehaviour
          }
      }
     */
+    void shoot()
+    {
+        int moveDirection = 1;
+        if (Input.GetKeyDown("e"))
+        {
+            GameObject clone;
+            clone = Instantiate(weapon, transform.position, transform.rotation);
+
+            Rigidbody2D rb = clone.GetComponent<Rigidbody2D>();
+
+            rb.linearVelocity = new Vector2( 15, 0 ); 
+
+            if(facingRight == false)
+            {
+                rb.linearVelocity = new Vector2(-15, 0);
+            }
+
+            rb.transform.position = new Vector3(transform.position.x + 1, transform.position.y +1.25f, transform.position.z + 1);
+        }
+    }
+
+
+
+
 
     public bool ExtendedRayCollisionCheck(float xoffs, float yoffs)
     {
