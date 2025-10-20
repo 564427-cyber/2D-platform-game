@@ -1,6 +1,7 @@
 using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Spritemove : MonoBehaviour
 {
@@ -13,13 +14,19 @@ public class Spritemove : MonoBehaviour
     private bool facingRight = true;
     HelperScript helper;
     public GameObject weapon;
-    
+    public Slider playerHealthBar;
+    public float maxHealth = 100f;
+    public float currentHealth;
     
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         groundLayerMask = LayerMask.GetMask("Ground");
         lives = 3;
+
+        currentHealth = maxHealth;
+        playerHealthBar.maxValue = maxHealth;
+        playerHealthBar.value = currentHealth;
   
 
         helper = gameObject.AddComponent<HelperScript>();
@@ -143,6 +150,17 @@ public class Spritemove : MonoBehaviour
          }
      }
     */
+
+    public void TakeDamage(float damage)
+    {
+        currentHealth -= damage;
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+
+        if(currentHealth <= 0)
+        {
+            Die();
+        }
+    }
     void shoot()
     {
         int moveDirection = 1;
@@ -153,18 +171,23 @@ public class Spritemove : MonoBehaviour
 
             Rigidbody2D rb = clone.GetComponent<Rigidbody2D>();
 
-            rb.linearVelocity = new Vector2( 15, 0 ); 
+            rb.linearVelocity = new Vector2( 15, 0 );
 
-            if(facingRight == false)
+            if (facingRight)
+            {
+                rb.linearVelocity = new Vector2(15, 0);
+                clone.transform.position = new Vector3(transform.position.x + 1, transform.position.y + 1.25f, transform.position.z);
+            }
+            else
             {
                 rb.linearVelocity = new Vector2(-15, 0);
+                clone.transform.position = new Vector3(transform.position.x - 1, transform.position.y + 1.25f, transform.position.z);
             }
 
-            rb.transform.position = new Vector3(transform.position.x + 1, transform.position.y +1.25f, transform.position.z + 1);
+
         }
     }
-
-
+    
 
 
 
