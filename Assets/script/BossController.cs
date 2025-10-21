@@ -3,10 +3,13 @@ using UnityEditor.Build;
 using UnityEditor.ShaderGraph.Serialization;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.U2D;
 using UnityEngine.UI;
 
 public class BossController : MonoBehaviour
 {
+   
+
     //boss settings
     public float maxHealth = 200f;
     private float currentHealth;
@@ -19,7 +22,7 @@ public class BossController : MonoBehaviour
 
     //Attack settings
     public float attackRange = 5f;
-    public float attackDamage = 20f;
+    public float attackDamage = 10f;
     public float attackCooldown = 5f;
     private float lastAttackTime;
     private bool isRecovering = false;
@@ -46,6 +49,16 @@ public class BossController : MonoBehaviour
 
         if (healthBarUI != null) 
             healthBarUI.SetActive(false);
+
+        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+        if (playerObj != null)
+            player = playerObj.transform;
+        else
+            Debug.LogWarning("Player object not found! Make sure it’s tagged 'Player'.");
+
+
+
+
 
     }
 
@@ -119,38 +132,34 @@ public class BossController : MonoBehaviour
 
     void AttackPlayer()
     {
-        if (isRecovering) return; //dont attack during recovery
+        Debug.Log("AttackPlayer() called");
 
-        animator?.SetBool("isMoving", false);
+        if (isRecovering) return;
 
-        if (Time.time - lastAttackTime >= attackCooldown)
+        animator.SetTrigger("Attack");
+
+        if (Vector3.Distance(transform.position, player.position) <= attackRange)
         {
-            StartCoroutine(PlayAttackAnimation());
+            Debug.Log("Player in range — trying to deal damage");
 
-
-            //check if player is still in range before applying damage
-            if (Vector3.Distance(transform.position, player.position) <= attackRange)
+            PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
+            if (playerHealth != null)
             {
-                PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
-                if (playerHealth != null)
-                {
-                    playerHealth.TakeDamage(attackDamage);
-                }
-
+                playerHealth.TakeDamage(attackDamage);
+                Debug.Log("Dealt " + attackDamage + " damage");
             }
-            lastAttackTime = Time.time;
-            StartCoroutine(RecoverAfterAttack()); //begin recovery period
-
-           
-
         }
 
+        lastAttackTime = Time.time;
+        StartCoroutine(RecoverAfterAttack());
     }
+
+
 
     IEnumerator PlayAttackAnimation()
     {
         animator?.SetTrigger("attack");
-        yield return new WaitForSeconds(2f); // Delay before next animation (adjust as needed)
+        yield return new WaitForSeconds(2f); // Delay before next animation 
         animator?.ResetTrigger("attack");
     }
 
@@ -170,20 +179,26 @@ public class BossController : MonoBehaviour
         }
     }
 
+    
     void Die()
     {
-        Debug.Log("Boss defeated");
-        animator?.SetTrigger("die");
-        this.enabled = false;
+         Debug.Log("Boss defeated!");
+         animator?.SetTrigger("die");
+         this.enabled = false;
 
-        if (healthBarUI != null)
+         if (healthBarUI != null)
             healthBarUI.SetActive(false);
 
+         // Stop the timer when boss dies
+         LevelTimer timer = FindFirstObjectByType<LevelTimer>();
+         if (timer != null)
+            timer.StopTimer();
 
         Destroy(gameObject, 0.5f);
     }
 
-     IEnumerator RecoverAfterAttack()
+
+    IEnumerator RecoverAfterAttack()
     {
         isRecovering = true;
         yield return new WaitForSeconds(recoveryTime);

@@ -25,7 +25,7 @@ public class Bullet : MonoBehaviour
         }
 
         // stop bullets hitting player on environment
-        else if (!other.CompareTag("player"))
+        else if (!other.CompareTag("Player"))
         {
             Destroy(gameObject);
         }

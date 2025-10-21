@@ -1,7 +1,11 @@
 using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.Collections;
+
+
 
 public class Spritemove : MonoBehaviour
 {
@@ -153,14 +157,61 @@ public class Spritemove : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+        Debug.Log("TakeDamage() called with damage: " + damage);
+
         currentHealth -= damage;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
 
-        if(currentHealth <= 0)
+        if (playerHealthBar != null)
+            playerHealthBar.value = currentHealth;
+
+        Debug.Log("Current Health: " + currentHealth);
+
+        if (currentHealth <= 0)
         {
+            Debug.Log("Health hit zero!");
             Die();
         }
     }
+
+    void Die()
+    {
+        Debug.Log("Player died!");
+
+        if (anim != null)
+            anim.SetTrigger("die");
+
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+        if (rb != null)
+            rb.linearVelocity = Vector2.zero;
+
+        Collider2D col = GetComponent<Collider2D>();
+        if (col != null)
+            col.enabled = false;
+
+        this.enabled = false;
+
+        // Find and trigger the fade
+        ScreenFader fader = Object.FindFirstObjectByType<ScreenFader>();
+
+        if (fader != null)
+            StartCoroutine(FadeAndRestart(fader));
+        else
+            Invoke(nameof(RestartScene), 2f);
+    }
+
+    IEnumerator FadeAndRestart(ScreenFader fader)
+    {
+        yield return fader.FadeOut();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    void RestartScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+
     void shoot()
     {
         int moveDirection = 1;

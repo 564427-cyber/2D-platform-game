@@ -1,10 +1,12 @@
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.SceneManagement; // ✅ Add this!
 
 public class PlayerHealth : MonoBehaviour
 {
     public float health = 100f;
     public Transform player;
     public Transform respawnPoint;
+
     public void TakeDamage(float amount)
     {
         health -= amount;
@@ -20,20 +22,13 @@ public class PlayerHealth : MonoBehaviour
     {
         Debug.Log("Player is dead!");
 
-        if (respawnPoint != null)
-        {
-            player.transform.position = respawnPoint.position;
-            health = 100f;
-            Debug.Log("Player respawned!");
-        }
-        else
-        {
-            Debug.LogWarning("Respawn point not assigned");
-        }
-
+        // ✅ Instead of respawning, restart the entire scene
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+}
+
 
   
     
 
-}
+
