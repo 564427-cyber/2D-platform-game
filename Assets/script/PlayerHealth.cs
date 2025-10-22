@@ -22,7 +22,7 @@ public class PlayerHealth : MonoBehaviour
     {
         Debug.Log("Player is dead!");
 
-        // ✅ Instead of respawning, restart the entire scene
+        //restart the scene
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

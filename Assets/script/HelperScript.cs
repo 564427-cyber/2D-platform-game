@@ -2,8 +2,7 @@ using System;
 using UnityEngine;
 
 public class HelperScript : MonoBehaviour
-{
-    
+{    
     public void DoFlipObject( bool flip)
     {
         SpriteRenderer sr = gameObject.GetComponent<SpriteRenderer>();
@@ -16,10 +15,7 @@ public class HelperScript : MonoBehaviour
         {
             sr.flipX = false;
         }
-
     }
-
-
     public void DoSpeech()
     {
         if (Input.GetKey("h"))
@@ -27,5 +23,4 @@ public class HelperScript : MonoBehaviour
             print("Hello World!");
         }
     }
-
 }

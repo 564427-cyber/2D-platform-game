@@ -1,32 +1,25 @@
 using System.Collections;
-using UnityEditor.Build;
-using UnityEditor.ShaderGraph.Serialization;
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.U2D;
 using UnityEngine.UI;
 
 public class BossController : MonoBehaviour
-{
-   
-
+{   
     //boss settings
-    public float maxHealth = 200f;
+    public float maxHealth = 150f;
     private float currentHealth;
 
     //detection settings
-    public float detectionRange = 15f; //how far away before the boss can detect and chase the player
+    public float detectionRange = 15f; 
     private bool playerDetected = false;
     private float timeSincePlayerDetected = 0f;
-    public float attackDelay = 3f; //how long the boss can attack after detecting a player
+    public float attackDelay = 3f; 
 
     //Attack settings
     public float attackRange = 5f;
     public float attackDamage = 10f;
-    public float attackCooldown = 5f;
-    private float lastAttackTime;
+    public float attackCooldown = 5f;    
     private bool isRecovering = false;
-    public float recoveryTime = 3f; //how long the boss will pause after attacking
+    public float recoveryTime = 3f; 
 
     //Movement settings
     public float moveSpeed = 3f;
@@ -36,9 +29,8 @@ public class BossController : MonoBehaviour
 
     //Health bar UI
     public Slider healthBar;
-    public GameObject healthBarUI; // the parent gameobject (slider) to show / hide
-
-   
+    public GameObject healthBarUI; 
+       
     void Start()
     {
         currentHealth = maxHealth;
@@ -56,20 +48,13 @@ public class BossController : MonoBehaviour
         else
             Debug.LogWarning("Player object not found! Make sure it’s tagged 'Player'.");
 
-
-
-
-
-    }
-
-    // Update is called once per frame
+    }        
     void Update()
     {
         if (player == null) return;
 
         float distance = Vector3.Distance(transform.position, player.position);
-
-        //check if player is within detection range
+                
         if (distance <= detectionRange)
         {
             if (!playerDetected)
@@ -77,11 +62,11 @@ public class BossController : MonoBehaviour
                 playerDetected = true;
                 if (healthBarUI != null)
                     healthBarUI.SetActive(true);
-                timeSincePlayerDetected = 0f; //reset timer when first detecting player
+                timeSincePlayerDetected = 0f; 
             }
             else
             {
-                timeSincePlayerDetected += Time.deltaTime; //count up while player is detected
+                timeSincePlayerDetected += Time.deltaTime; 
             }
         }
         else if (distance > detectionRange * 1.2f)
@@ -89,47 +74,43 @@ public class BossController : MonoBehaviour
             playerDetected = false;
             if (healthBarUI != null)
                 healthBarUI.SetActive(false);
-            timeSincePlayerDetected = 0f; //reset when losing player
+            timeSincePlayerDetected = 0f; 
         }
         if (!playerDetected)
         {
             animator?.SetBool("isMoving", false);
             return;
         }
-
-
-        //face the player
+                
         Vector3 lookDir = player.position - transform.position;
 
         if (lookDir.x > 0)
         {
-            transform.localScale = new Vector3(1, 1, 1); //face right
+            transform.localScale = new Vector3(1, 1, 1); 
         }
         else if (lookDir.x < 0)
         {
-            transform.localScale = new Vector3(-1, -1, -1); //face left
+            transform.localScale = new Vector3(-1, -1, -1); 
         }
-        //Move towards player if out of attack range
+       
         if(distance > attackRange)
         {
             MoveTowardsPlayer();
         }
         else if (timeSincePlayerDetected >= attackDelay)
         {
-            AttackPlayer(); //only attack after delay
+            AttackPlayer(); 
         }
         else
         {
-            MoveTowardsPlayer(); //keep moving closer until delay passes
+            MoveTowardsPlayer(); 
         }
     }
-
     void MoveTowardsPlayer()
     {
         transform.position = Vector3.MoveTowards(transform.position, player.position, moveSpeed * Time.deltaTime);
         animator?.SetBool("isMoving", true);
     }
-
     void AttackPlayer()
     {
         Debug.Log("AttackPlayer() called");
@@ -150,36 +131,24 @@ public class BossController : MonoBehaviour
             }
         }
 
-        lastAttackTime = Time.time;
+        
         StartCoroutine(RecoverAfterAttack());
     }
-
-
-
-    IEnumerator PlayAttackAnimation()
-    {
-        animator?.SetTrigger("attack");
-        yield return new WaitForSeconds(2f); // Delay before next animation 
-        animator?.ResetTrigger("attack");
-    }
-
-
+   
     public void TakeDamage(float amount)
     {
         currentHealth -= amount;
 
         if (healthBar != null)
         {
-            healthBar.value = currentHealth; //updates the slider instantly
+            healthBar.value = currentHealth;
         }
 
         if (currentHealth <= 0)
         {
             Die();
         }
-    }
-
-    
+    }   
     void Die()
     {
          Debug.Log("Boss defeated!");
@@ -196,14 +165,10 @@ public class BossController : MonoBehaviour
 
         Destroy(gameObject, 0.5f);
     }
-
-
     IEnumerator RecoverAfterAttack()
     {
         isRecovering = true;
         yield return new WaitForSeconds(recoveryTime);
         isRecovering = false;
     }
-
 }
-

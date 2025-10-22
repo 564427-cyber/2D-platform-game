@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-
 public class ScreenFader : MonoBehaviour
 {
     public Image fadeImage;
@@ -12,7 +11,6 @@ public class ScreenFader : MonoBehaviour
         if (fadeImage == null)
             fadeImage = GetComponent<Image>();
     }
-
     public IEnumerator FadeOut()
     {
         float elapsedTime = 0f;

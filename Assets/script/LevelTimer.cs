@@ -1,6 +1,5 @@
 using TMPro; 
 using UnityEngine;
-
 public class LevelTimer : MonoBehaviour
 {
     public TextMeshProUGUI timerText; 

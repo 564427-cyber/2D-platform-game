@@ -1,11 +1,8 @@
-using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
+
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections;
-
-
 
 public class Spritemove : MonoBehaviour
 {
@@ -20,29 +17,21 @@ public class Spritemove : MonoBehaviour
     public GameObject weapon;
     public Slider playerHealthBar;
     public float maxHealth = 100f;
-    public float currentHealth;
-    
+    public float currentHealth;    
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         groundLayerMask = LayerMask.GetMask("Ground");
         lives = 3;
-
         currentHealth = maxHealth;
         playerHealthBar.maxValue = maxHealth;
         playerHealthBar.value = currentHealth;
-  
-
         helper = gameObject.AddComponent<HelperScript>();
     }
-
     // Update is called once per frame
     void Update()
-    {
-
-        
+    {                
         //  FlipController();
-
         float xvel, yvel;
 
         xvel = rb.linearVelocity.x;
@@ -52,22 +41,16 @@ public class Spritemove : MonoBehaviour
         {
             xvel = -4;
             facingRight = false;
-
         }
-
-
         if (Input.GetKey("d"))
         {
             xvel = 4;
             facingRight = true;
-
         }
-
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded )
         {
             yvel = +7;
         }
-
         if (xvel >= 0.1f || xvel <= -0.1f)
         {
             anim.SetBool("isWalking", true);
@@ -77,13 +60,9 @@ public class Spritemove : MonoBehaviour
             anim.SetBool("isWalking", false);
         }
 
-
-
-
         rb.linearVelocity = new Vector3(xvel, yvel, 0);
 
         shoot();
-
 
         //do raycasting check
         bool gc = ExtendedRayCollisionCheck(0, 0);
@@ -99,7 +78,6 @@ public class Spritemove : MonoBehaviour
         {
             anim.SetBool("isJumping", true);
         }
-
         if (xvel < 0)
         {
             helper.DoFlipObject(true);
@@ -108,53 +86,7 @@ public class Spritemove : MonoBehaviour
         {
             helper.DoFlipObject(false);
         }
-
-
     }
-
-
-
-    /*
-    private void Flip()
-    {
-        facingRight = !facingRight; //works as a switcher
-        transform.Rotate(0, 180, 0);
-    }
-
-    private void FlipController()
-    {
-        if (rb.linearVelocity.x < 0 && facingRight)
-            Flip();
-        else if (rb.linearVelocity.x > 0 && !facingRight)
-            Flip();
-    }
-
-   */
-
-
-
-
-    /*
-
-     private void OnCollisionEnter2D(Collision2D other)
-     {
-         if (other.gameObject.CompareTag("floor"))
-         {
-             anim.SetBool("isJumping", false);
-             isGrounded = true;
-         }
-     }
-
-     private void OnCollisionExit2D(Collision2D other)
-     {
-         if (other.gameObject.CompareTag("floor"))
-         {
-             anim.SetBool("isJumping", true);
-             isGrounded = false;
-         }
-     }
-    */
-
     public void TakeDamage(float damage)
     {
         Debug.Log("TakeDamage() called with damage: " + damage);
@@ -173,7 +105,6 @@ public class Spritemove : MonoBehaviour
             Die();
         }
     }
-
     void Die()
     {
         Debug.Log("Player died!");
@@ -199,22 +130,18 @@ public class Spritemove : MonoBehaviour
         else
             Invoke(nameof(RestartScene), 2f);
     }
-
     IEnumerator FadeAndRestart(ScreenFader fader)
     {
         yield return fader.FadeOut();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
-
     void RestartScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
-
-
     void shoot()
     {
-        int moveDirection = 1;
+
         if (Input.GetKeyDown("e"))
         {
             GameObject clone;
@@ -234,14 +161,8 @@ public class Spritemove : MonoBehaviour
                 rb.linearVelocity = new Vector2(-15, 0);
                 clone.transform.position = new Vector3(transform.position.x - 1, transform.position.y + 1.25f, transform.position.z);
             }
-
-
         }
-    }
-    
-
-
-
+    }    
     public bool ExtendedRayCollisionCheck(float xoffs, float yoffs)
     {
         float rayLength = 0.5f;
@@ -265,12 +186,4 @@ public class Spritemove : MonoBehaviour
 
         return hitSomething;
     }
-
-
-
-
-
-
-
-
 }
