@@ -9,6 +9,9 @@ public class EnemyMove : MonoBehaviour
     float xvel;
     Rigidbody2D rb;
     bool gc;
+    public float MaxHealth = 20f;
+    private float currentHealth;
+
     void Start()
     {
         groundLayerMask = LayerMask.GetMask("Ground");

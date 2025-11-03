@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class BossController : MonoBehaviour
 {   
@@ -12,14 +11,14 @@ public class BossController : MonoBehaviour
     public float detectionRange = 15f; 
     private bool playerDetected = false;
     private float timeSincePlayerDetected = 0f;
-    public float attackDelay = 3f; 
+    public float attackDelay = 4f; 
 
     //Attack settings
     public float attackRange = 5f;
-    public float attackDamage = 10f;
+    public float attackDamage = 25f;
     public float attackCooldown = 5f;    
     private bool isRecovering = false;
-    public float recoveryTime = 3f; 
+    public float recoveryTime = 4f; 
 
     //Movement settings
     public float moveSpeed = 3f;
@@ -27,21 +26,12 @@ public class BossController : MonoBehaviour
 
     private Animator animator;
 
-    //Health bar UI
-    public Slider healthBar;
-    public GameObject healthBarUI; 
-       
     void Start()
     {
         currentHealth = maxHealth;
         animator = GetComponent<Animator>();
-
-        if (healthBar != null)
-            healthBar.maxValue = maxHealth;
-
-        if (healthBarUI != null) 
-            healthBarUI.SetActive(false);
-
+            
+        
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
         if (playerObj != null)
             player = playerObj.transform;
@@ -60,8 +50,6 @@ public class BossController : MonoBehaviour
             if (!playerDetected)
             {
                 playerDetected = true;
-                if (healthBarUI != null)
-                    healthBarUI.SetActive(true);
                 timeSincePlayerDetected = 0f; 
             }
             else
@@ -72,13 +60,10 @@ public class BossController : MonoBehaviour
         else if (distance > detectionRange * 1.2f)
         {
             playerDetected = false;
-            if (healthBarUI != null)
-                healthBarUI.SetActive(false);
             timeSincePlayerDetected = 0f; 
         }
         if (!playerDetected)
         {
-            animator?.SetBool("isMoving", false);
             return;
         }
                 
@@ -108,8 +93,7 @@ public class BossController : MonoBehaviour
     }
     void MoveTowardsPlayer()
     {
-        transform.position = Vector3.MoveTowards(transform.position, player.position, moveSpeed * Time.deltaTime);
-        animator?.SetBool("isMoving", true);
+        transform.position = Vector3.MoveTowards(transform.position, player.position, moveSpeed * Time.deltaTime);        
     }
     void AttackPlayer()
     {
@@ -129,20 +113,13 @@ public class BossController : MonoBehaviour
                 playerHealth.TakeDamage(attackDamage);
                 Debug.Log("Dealt " + attackDamage + " damage");
             }
-        }
-
-        
+        }        
         StartCoroutine(RecoverAfterAttack());
     }
    
     public void TakeDamage(float amount)
     {
         currentHealth -= amount;
-
-        if (healthBar != null)
-        {
-            healthBar.value = currentHealth;
-        }
 
         if (currentHealth <= 0)
         {
@@ -154,14 +131,6 @@ public class BossController : MonoBehaviour
          Debug.Log("Boss defeated!");
          animator?.SetTrigger("die");
          this.enabled = false;
-
-         if (healthBarUI != null)
-            healthBarUI.SetActive(false);
-
-         // Stop the timer when boss dies
-         LevelTimer timer = FindFirstObjectByType<LevelTimer>();
-         if (timer != null)
-            timer.StopTimer();
 
         Destroy(gameObject, 0.5f);
     }

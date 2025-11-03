@@ -1,8 +1,5 @@
 
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
-using System.Collections;
 
 public class Spritemove : MonoBehaviour
 {
@@ -15,17 +12,15 @@ public class Spritemove : MonoBehaviour
     private bool facingRight = true;
     HelperScript helper;
     public GameObject weapon;
-    public Slider playerHealthBar;
     public float maxHealth = 100f;
-    public float currentHealth;    
+    public float currentHealth;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         groundLayerMask = LayerMask.GetMask("Ground");
         lives = 3;
         currentHealth = maxHealth;
-        playerHealthBar.maxValue = maxHealth;
-        playerHealthBar.value = currentHealth;
         helper = gameObject.AddComponent<HelperScript>();
     }
     // Update is called once per frame
@@ -93,10 +88,6 @@ public class Spritemove : MonoBehaviour
 
         currentHealth -= damage;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
-
-        if (playerHealthBar != null)
-            playerHealthBar.value = currentHealth;
-
         Debug.Log("Current Health: " + currentHealth);
 
         if (currentHealth <= 0)
@@ -121,48 +112,33 @@ public class Spritemove : MonoBehaviour
             col.enabled = false;
 
         this.enabled = false;
-
-        // Find and trigger the fade
-        ScreenFader fader = Object.FindFirstObjectByType<ScreenFader>();
-
-        if (fader != null)
-            StartCoroutine(FadeAndRestart(fader));
-        else
-            Invoke(nameof(RestartScene), 2f);
     }
-    IEnumerator FadeAndRestart(ScreenFader fader)
-    {
-        yield return fader.FadeOut();
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
-    void RestartScene()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
-    void shoot()
-    {
+          
 
-        if (Input.GetKeyDown("e"))
+        void shoot()
         {
-            GameObject clone;
-            clone = Instantiate(weapon, transform.position, transform.rotation);
-
-            Rigidbody2D rb = clone.GetComponent<Rigidbody2D>();
-
-            rb.linearVelocity = new Vector2( 15, 0 );
-
-            if (facingRight)
+            if (Input.GetKeyDown("e"))
             {
+                GameObject clone;
+                clone = Instantiate(weapon, transform.position, transform.rotation);
+
+                Rigidbody2D rb = clone.GetComponent<Rigidbody2D>();
+
                 rb.linearVelocity = new Vector2(15, 0);
-                clone.transform.position = new Vector3(transform.position.x + 1, transform.position.y + 1.25f, transform.position.z);
+
+                if (facingRight)
+                {
+                    rb.linearVelocity = new Vector2(15, 0);
+                    clone.transform.position = new Vector3(transform.position.x + 1, transform.position.y + 1.25f, transform.position.z);
+                }
+                else
+                {
+                    rb.linearVelocity = new Vector2(-15, 0);
+                    clone.transform.position = new Vector3(transform.position.x - 1, transform.position.y + 1.25f, transform.position.z);
+                }
             }
-            else
-            {
-                rb.linearVelocity = new Vector2(-15, 0);
-                clone.transform.position = new Vector3(transform.position.x - 1, transform.position.y + 1.25f, transform.position.z);
-            }
-        }
-    }    
+        }            
+        
     public bool ExtendedRayCollisionCheck(float xoffs, float yoffs)
     {
         float rayLength = 0.5f;

@@ -16,11 +16,5 @@ public class HelperScript : MonoBehaviour
             sr.flipX = false;
         }
     }
-    public void DoSpeech()
-    {
-        if (Input.GetKey("h"))
-        {
-            print("Hello World!");
-        }
-    }
+   
 }
