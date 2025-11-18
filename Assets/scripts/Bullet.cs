@@ -21,9 +21,24 @@ public class Bullet : MonoBehaviour
             Destroy(gameObject); //destroy bullet after hit
         }
         // stop bullets hitting player on environment
+
+        if (other.CompareTag("enemy"))
+        {
+            EnemyMove enemy = other.GetComponent<EnemyMove>();
+            if (enemy != null)
+            {
+                enemy.TakeDamage(damage);
+            }
+            Destroy(gameObject);
+        }
+
         else if (!other.CompareTag("Player"))
         {
             Destroy(gameObject);
         }
+
     }  
+
+   
+    
 }

@@ -9,14 +9,17 @@ public class EnemyMove : MonoBehaviour
     float xvel;
     Rigidbody2D rb;
     bool gc;
-    public float MaxHealth = 20f;
+    public float maxHealth = 20f;
     private float currentHealth;
+
+    
 
     void Start()
     {
         groundLayerMask = LayerMask.GetMask("Ground");
         rb = GetComponent<Rigidbody2D>();
         xvel = 1;
+        currentHealth = maxHealth;
     }
     // Update is called once per frame
     void Update()
@@ -63,5 +66,20 @@ public class EnemyMove : MonoBehaviour
         Debug.DrawRay(transform.position + offset, -Vector3.up * rayLength, hitColor);
 
         return hitSomething;                
+    }
+    public void TakeDamage (float amount)
+    {
+        currentHealth -= amount;
+
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+    }
+    void Die()
+    {
+        Debug.Log("Enemy Defeated");
+
+        Destroy(gameObject, 0.5f);
     }
 }
